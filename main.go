@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"micro-services/handlers"
+	"time"
 
 	"net/http"
 	"os"
@@ -15,7 +16,14 @@ func main() {
 	sm := http.NewServeMux()
 	sm.Handle("/", hh)
 	sm.Handle("/goodbye", gh)
-	err := http.ListenAndServe(":8080", nil)
+	s := http.Server{
+		Addr:         ":9090",
+		Handler:      sm,
+		IdleTimeout:  120 * time.Second,
+		ReadTimeout:  1 * time.Second,
+		WriteTimeout: 1 * time.Second,
+	}
+	err := http.ListenAndServe(sm)
 	if err != nil {
 		log.Fatalln(err)
 	}
