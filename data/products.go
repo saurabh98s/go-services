@@ -1,6 +1,10 @@
 package data
 
-import "time"
+import (
+	"encoding/json"
+	"io"
+	"time"
+)
 
 // Product holds the product data
 type Product struct {
@@ -15,8 +19,18 @@ type Product struct {
 }
 
 // GetProducts returns arrays of products
-func GetProducts() []*Product {
+func GetProducts() Products {
 	return productList
+}
+
+// Products holds an array of products
+type Products []*Product
+
+// ToJSON Encodes data to JSON
+func (p *Products) ToJSON(w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(p)
+
 }
 
 var productList = []*Product{

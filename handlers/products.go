@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"log"
 	"micro-services/data"
 	"net/http"
@@ -19,11 +18,10 @@ func NewProducts(l *log.Logger) *Products {
 	}
 }
 
-func (p *Products)ServeHTTP(w http.ResponseWriter, h *http.Request) {
-	 productList:=data.GetProducts()
-	 data,err:=json.Marshal(productList)
-	 if err != nil {
-		 http.Error(w,"Unable to Marshal JSON",http.StatusInternalServerError)
-	 }
-	 w.Write(data)
+func (p *Products) ServeHTTP(w http.ResponseWriter, h *http.Request) {
+	productList := data.GetProducts()
+	err := productList.ToJSON(w) //encoding data  from New Encoder
+	if err != nil {
+		http.Error(w, "Unable to Marshal JSON", http.StatusInternalServerError)
+	}
 }
