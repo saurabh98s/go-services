@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	l := log.New(os.Stdout, "product-api ", log.LstdFlags)
 	hh := handlers.NewHello(l)
 	gh := handlers.NewGoodbye(l)
 	sm := http.NewServeMux()
@@ -23,7 +23,7 @@ func main() {
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
 	}
-	err := http.ListenAndServe(sm)
+	err := s.ListenAndServe()
 	if err != nil {
 		log.Fatalln(err)
 	}
