@@ -41,7 +41,6 @@ func main() {
 	l.Println("Recieved terminate signal, graceful shutdown\nsignal type:", sig)
 
 	// Graceful shutdown
-
 	timeoutContext, _ := context.WithTimeout(context.Background(), 30*time.Second)
 	s.Shutdown(timeoutContext)
 
