@@ -23,8 +23,25 @@ func GetProducts() Products {
 	return productList
 }
 
+// AddProduct adds the values to the required params
+func AddProduct(p *Product)  {
+	p.ID=getNextID()
+	productList=append(productList,p)
+}
+
+func getNextID() int  {
+	lp:=productList[len(productList)-1]
+	return lp.ID+1
+}
+
 // Products holds an array of products
 type Products []*Product
+
+// FromJSON decodes data to JSON
+func (p *Product) FromJSON(r io.Reader) error {
+	d := json.NewDecoder(r)
+	return d.Decode(p)
+}
 
 // ToJSON Encodes data to JSON
 func (p *Products) ToJSON(w io.Writer) error {
