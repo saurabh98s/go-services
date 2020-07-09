@@ -9,19 +9,27 @@ import (
 
 	"net/http"
 	"os"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
 	l := log.New(os.Stdout, "product-api ", log.LstdFlags)
-	ph:=handlers.NewProducts(l)
-	sm := http.NewServeMux()
+	ph := handlers.NewProducts(l)
+	// sm := http.NewServeMux()
 	// sm.Handle("/", hh)
 	// sm.Handle("/goodbye", gh)
-	sm.Handle("/",ph)
+	// Create a new serveMux and register the Handler
+	sm := mux.NewRouter()
+	getRouter:=sm.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/",ph.GetProducts)
+	 // sm.Handle("/", ph)
+	 putRouter:=sm.Methods(http.MethodPut).Subrouter()
+	 putRouter.HandleFunc("/{id:[0-9]+}",ph.UpdateProducts)
 
 	s := http.Server{
 		Addr:         ":9090", //binding the address
-		Handler:      sm, //setting the default address
+		Handler:      sm,      //setting the default address
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
@@ -34,7 +42,7 @@ func main() {
 			l.Fatal(err)
 		}
 	}()
-	//traps sigterm or interupt and gracefully shutdown the server	
+	//traps sigterm or interupt and gracefully shutdown the server
 	sigChan := make(chan os.Signal)
 	signal.Notify(sigChan, os.Interrupt)
 	signal.Notify(sigChan, os.Kill)
