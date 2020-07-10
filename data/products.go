@@ -25,35 +25,35 @@ func GetProducts() Products {
 }
 
 // AddProduct adds the values to the required params
-func AddProduct(p *Product)  {
-	p.ID=getNextID()
-	productList=append(productList,p)
+func AddProduct(p *Product) {
+	p.ID = getNextID()
+	productList = append(productList, p)
 }
 
 // UpdateProduct updates the value of ID
 func UpdateProduct(id int, p *Product) error {
-	_,pos,err:=findProduct(id)
+	_, pos, err := findProduct(id)
 	if err != nil {
 		return err
 	}
-	p.ID=id
-	productList[pos]=p
+	p.ID = id
+	productList[pos] = p
 	return nil
 }
 
-func findProduct(id int) (*Product,int,error)  {
+func findProduct(id int) (*Product, int, error) {
 	for i, p := range productList {
-		if p.ID == id{
-			return p,i,nil
+		if p.ID == id {
+			return p, i, nil
 		}
 	}
-	return nil,0,errors.New("No product found")
-	
+	return nil, 0, errors.New("No product found")
+
 }
 
-func getNextID() int  {
-	lp:=productList[len(productList)-1]
-	return lp.ID+1
+func getNextID() int {
+	lp := productList[len(productList)-1]
+	return lp.ID + 1
 }
 
 // Products holds an array of products
