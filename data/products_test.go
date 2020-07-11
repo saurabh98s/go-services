@@ -6,7 +6,7 @@ func TestChecksValidation(t *testing.T) {
 	p := &Product{
 		Name:  "Saurabh",
 		Price: 1.00,
-		SKU:   "aaa-bbb-ccc",
+		SKU:   "aaa-qq-ccc",
 	}
 	err := p.Validate()
 	if err != nil {
