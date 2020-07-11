@@ -1,3 +1,20 @@
+// Package classification of Product API
+// 
+// Documentation for Product APi
+// 
+// Schemes: http
+// BasePath: /
+// Version: 1.0.0
+// 
+// Consumes:
+// -application/json
+// 
+// Produces:
+// -application/json
+// 
+// swagger:meta
+
+
 package handlers
 
 import (
@@ -23,48 +40,6 @@ func NewProducts(l *log.Logger) *Products {
 	}
 }
 
-func (p *Products) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// if r.Method == http.MethodGet {
-	// 	p.getProducts(w, r)
-	// 	return
-	// }
-
-	// if r.Method == http.MethodPost {
-	// 	p.addProduct(w, r)
-	// }
-
-	// if r.Method == http.MethodPut {
-	// 	p.l.Println("PUT")
-	// 	// expecting id in the URI
-	// 	path := r.URL.Path
-	// 	reg := regexp.MustCompile(`/([0-9]+)`)
-	// 	group := reg.FindAllStringSubmatch(path, -1)
-
-	// 	if len(group) != 1 {
-	// 		http.Error(w, "Invalid URL", http.StatusBadRequest)
-	// 		return
-	// 	}
-
-	// 	if len(group) >= 2 {
-	// 		p.l.Println("More than one capture group")
-	// 		http.Error(w, "Invalid URL", http.StatusBadRequest)
-	// 		return
-	// 	}
-
-	// 	idString := group[0][1]
-	// 	id, err := strconv.Atoi(idString)
-	// 	if err != nil {
-	// 		http.Error(w, "Invalid URL", http.StatusBadRequest)
-	// 		return
-	// 	}
-	// 	p.updateProducts(id, w, r)
-	// 	return
-
-	// }
-	// // Catch rest of the request
-	// w.WriteHeader(http.StatusMethodNotAllowed)
-}
-
 // GetProducts returns the list of Products
 func (p *Products) GetProducts(w http.ResponseWriter, r *http.Request) {
 	p.l.Printf("Handle GET Products")
@@ -78,19 +53,14 @@ func (p *Products) GetProducts(w http.ResponseWriter, r *http.Request) {
 // AddProduct adds a new Product to the list
 func (p *Products) AddProduct(w http.ResponseWriter, r *http.Request) {
 	p.l.Printf("Handle POST Products")
-	// product := &data.Product{}
-	// err := product.FromJSON(r.Body)
-	// if err != nil {
-	// 	http.Error(w, "Unable to UnMarshal JSON", http.StatusBadRequest)
-	// }
 	product := r.Context().Value(KeyProduct{}).(data.Product)
-
 	data.AddProduct(&product)
 
 }
 
 // UpdateProducts updates the value of a given product
 func (p *Products) UpdateProducts(w http.ResponseWriter, r *http.Request) {
+	// returns a map with the required value/
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -98,12 +68,8 @@ func (p *Products) UpdateProducts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	p.l.Printf("Handle PUT Products %d", id)
-	//  product := &data.Product{}
 	product := r.Context().Value(KeyProduct{}).(data.Product)
-	// err = product.FromJSON(r.Body)
-	// if err != nil {
-	// 	http.Error(w, "Unable to UnMarshal JSON", http.StatusBadRequest)
-	// }
+	// Update value with corresponding data
 	err = data.UpdateProduct(id, &product)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
