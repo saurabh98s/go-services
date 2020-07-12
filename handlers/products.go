@@ -23,7 +23,15 @@ import (
 	"net/http"
 )
 
-// Products is a simple handler
+// A list of products returns in a the response
+// swagger:response productsResponse
+type productsResponseWrapper struct {
+	// All products in the system
+	// in:body
+	Body []data.Product
+}
+
+// Products is a http handler
 type Products struct {
 	l *log.Logger
 }
@@ -34,11 +42,6 @@ func NewProducts(l *log.Logger) *Products {
 		l: l,
 	}
 }
-
-
-
-
-
 
 // KeyProduct stores the value of the context
 type KeyProduct struct{}
