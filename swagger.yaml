@@ -41,7 +41,7 @@ paths:
 produces:
 - application/json
 responses:
-  products:
+  productsResponse:
     description: A list of products returns in the response
     schema:
       items:
