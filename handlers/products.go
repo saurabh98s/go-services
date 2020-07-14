@@ -23,9 +23,9 @@ import (
 	"net/http"
 )
 
-// A list of products returns in a the response
+// A list of products returns in the response
 // swagger:response productsResponse
-type productsResponseWrapper struct {
+type productsResponse struct {
 	// All products in the system
 	// in:body
 	Body []data.Product

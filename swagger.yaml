@@ -41,8 +41,8 @@ paths:
 produces:
 - application/json
 responses:
-  productsResponse:
-    description: A list of products returns in a the response
+  products:
+    description: A list of products returns in the response
     schema:
       items:
         $ref: '#/definitions/Product'
