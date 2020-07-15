@@ -8,7 +8,7 @@ import (
 // swagger:route GET /products products listProducts
 // Returns a list of Products
 // Responses:
-// 200: productResponse
+// 200: productsResponse
 
 // GetProducts returns the list of Products
 func (p *Products) GetProducts(w http.ResponseWriter, r *http.Request) {

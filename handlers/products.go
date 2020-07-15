@@ -31,6 +31,18 @@ type productsResponse struct {
 	Body []data.Product
 }
 
+// swagger:response noContentResponse
+type noContentResponse struct {
+	
+}
+
+type productIDParameter struct {
+	// The id of the product to delete from the database
+	// in: path
+	// required: true
+	ID int `json:"id"`
+}
+
 // Products is a http handler
 type Products struct {
 	l *log.Logger
