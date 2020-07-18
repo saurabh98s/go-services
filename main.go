@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"micro-services/data"
 	"micro-services/handlers"
 	"os/signal"
 	"time"
@@ -16,18 +17,20 @@ import (
 
 func main() {
 	l := log.New(os.Stdout, "product-api ", log.LstdFlags)
-	ph := handlers.NewProducts(l)
+	v := data.NewValidation()
+	ph := handlers.NewProducts(l,v)
 	// Create a new serveMux and register the Handler
 	sm := mux.NewRouter()
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/", ph.GetProducts)
+	getRouter.HandleFunc("/products", ph.ListAll)
+	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.ListSingle)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProducts)
+	putRouter.HandleFunc("/{id:[0-9]+}", ph.Update)
 	putRouter.Use(ph.MiddlewareValidateProduct)
 
 	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/", ph.AddProduct)
+	postRouter.HandleFunc("/products", ph.Create)
 	postRouter.Use(ph.MiddlewareValidateProduct)
 
 	deleteRouter:= sm.Methods(http.MethodDelete).Subrouter()
