@@ -7,6 +7,9 @@ Then you can generate the Swagger documentation:
 
 swagger generate spec -o ./swagger.yaml --scan-models
 
+Use the below command to the client folder(create one at the same level at data)
+`swagger generate client -f ../swagger.yaml -A micro-services`
+
 Once you have that run the server , windows will prompt you to add a firewall exception, click ok:
 
 `go run main.go`
