@@ -61,16 +61,22 @@ func AddProduct(p *Product) {
 	productList = append(productList, p)
 }
 
-// UpdateProduct updates the value of ID
-func UpdateProduct(id int, p *Product) error {
-	_, pos, err := findProduct(id)
-	if err != nil {
-		return err
+// UpdateProduct replaces a product in the database with the given
+// item.
+// If a product with the given id does not exist in the database
+// this function returns a ProductNotFound error
+func UpdateProduct(p Product) error {
+	i := findIndexByProductID(p.ID)
+	if i == -1 {
+		return ErrProductNotFound
 	}
-	p.ID = id
-	productList[pos] = p
+
+	// update the product in the DB
+	productList[i] = &p
+
 	return nil
 }
+
 
 // DeleteProduct deletes a product from the database
 func DeleteProduct(id int) error {

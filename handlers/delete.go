@@ -3,9 +3,6 @@ package handlers
 import (
 	"micro-services/data"
 	"net/http"
-	"strconv"
-
-	"github.com/gorilla/mux"
 )
 
 // swagger:route DELETE /products/{id} products deleteProduct
