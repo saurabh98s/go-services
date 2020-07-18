@@ -3,9 +3,13 @@ consumes:
 - application/json
 definitions:
   Product:
-    description: Product holds the product data
+    description: |-
+      Product holds the product data
+      swagger: model
     properties:
       description:
+        description: the description for this poduct
+        maxLength: 10000
         type: string
         x-go-name: Description
       id:
@@ -15,17 +19,26 @@ definitions:
         type: integer
         x-go-name: ID
       name:
+        description: the name for this poduct
+        maxLength: 255
         type: string
         x-go-name: Name
       price:
+        description: the price for the product
         format: float
+        minimum: 0.01
         type: number
         x-go-name: Price
       sku:
+        description: the SKU for the product
+        pattern: '[a-z]+-[a-z]+-[a-z]+'
         type: string
         x-go-name: SKU
     required:
     - id
+    - name
+    - price
+    - sku
     type: object
     x-go-package: micro-services/data
 info:
@@ -54,7 +67,8 @@ paths:
 produces:
 - application/json
 responses:
-  noContentResponse: {}
+  noContentResponse:
+    description: No content found is returned by the API endpoint
   productsResponse:
     description: A list of products returns in the response
     schema:

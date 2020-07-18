@@ -31,6 +31,7 @@ type productsResponse struct {
 	Body []data.Product
 }
 
+// No content found is returned by the API endpoint
 // swagger:response noContentResponse
 type noContentResponse struct {
 	

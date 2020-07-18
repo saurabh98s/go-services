@@ -1,10 +1,8 @@
 package data
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"regexp"
 	"time"
 
@@ -15,19 +13,41 @@ import (
 var ErrProductNotFound = fmt.Errorf("Product not found")
 
 // Product holds the product data
+// swagger: model
 type Product struct {
 	// the id for this user
-	// 
+	//
 	// required: true
 	// min: 1
-	ID          int     `json:"id"`
-	Name        string  `json:"name"  validate:"required"`
-	Description string  `json:"description"`
-	Price       float32 `json:"price" validate:"gt=0"`
-	SKU         string  `json:"sku" validate:"required,sku"`
-	CreatedOn   string  `json:"-"` //omit from output
-	UpdatedOn   string  `json:"-"` //omit from output
-	DeletedOn   string  `json:"-"` //omit from output
+	ID int `json:"id"`
+
+	// the name for this poduct
+	//
+	// required: true
+	// max length: 255
+	Name string `json:"name"  validate:"required"`
+
+	// the description for this poduct
+	//
+	// required: false
+	// max length: 10000
+	Description string `json:"description"`
+
+	// the price for the product
+	//
+	// required: true
+	// min: 0.01
+	Price float32 `json:"price" validate:"gt=0"`
+
+	// the SKU for the product
+	//
+	// required: true
+	// pattern: [a-z]+-[a-z]+-[a-z]+
+	SKU string `json:"sku" validate:"required,sku"`
+
+	CreatedOn string `json:"-"` //omit from output
+	UpdatedOn string `json:"-"` //omit from output
+	DeletedOn string `json:"-"` //omit from output
 }
 
 // GetProducts returns arrays of products
@@ -82,19 +102,6 @@ func getNextID() int {
 // Products holds an array of products
 type Products []*Product
 
-// FromJSON decodes data to JSON
-func (p *Product) FromJSON(r io.Reader) error {
-	d := json.NewDecoder(r)
-	return d.Decode(p)
-}
-
-// ToJSON Encodes data to JSON
-func (p *Products) ToJSON(w io.Writer) error {
-	e := json.NewEncoder(w)
-	return e.Encode(p)
-
-}
-
 // Validate checks if input matches the parameters
 func (p *Product) Validate() error {
 	validate := validator.New()
@@ -102,6 +109,7 @@ func (p *Product) Validate() error {
 	return validate.Struct(p)
 }
 
+// ValidateSKU matches the SKU input with the required pattern
 func ValidateSKU(fl validator.FieldLevel) bool {
 	re := regexp.MustCompile(`[a-z]+-[a-z]+-[a-z]+`)
 
