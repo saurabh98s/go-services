@@ -16,11 +16,8 @@
 package handlers
 
 import (
-	"context"
-	"fmt"
 	"log"
 	"micro-services/data"
-	"net/http"
 )
 
 // A list of products returns in the response
@@ -34,9 +31,9 @@ type productsResponse struct {
 // No content found is returned by the API endpoint
 // swagger:response noContentResponse
 type noContentResponse struct {
-	
 }
 
+//swagger:parameters deleteProduct
 type productIDParameter struct {
 	// The id of the product to delete from the database
 	// in: path
@@ -59,32 +56,32 @@ func NewProducts(l *log.Logger) *Products {
 // KeyProduct stores the value of the context
 type KeyProduct struct{}
 
-// MiddlewareValidateProduct handles deserializing data
-func (p Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		prod := data.Product{}
+// // MiddlewareValidateProduct handles deserializing data
+// func (p Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+// 		prod := data.Product{}
 
-		err := prod.FromJSON(r.Body)
-		if err != nil {
-			p.l.Println("[ERROR] deserializing product", err)
-			http.Error(rw, "Error reading product", http.StatusBadRequest)
-			return
-		}
+// 		err := prod.FromJSON(r.Body)
+// 		if err != nil {
+// 			p.l.Println("[ERROR] deserializing product", err)
+// 			http.Error(rw, "Error reading product", http.StatusBadRequest)
+// 			return
+// 		}
 
-		// validate the product
+// 		// validate the product
 
-		err = prod.Validate()
-		if err != nil {
-			p.l.Println("[ERROR] validating product", err)
-			http.Error(rw, fmt.Sprintf("Error validating product: %s", err),
-				http.StatusBadRequest)
-			return
-		}
-		// add the product to the context
-		ctx := context.WithValue(r.Context(), KeyProduct{}, prod)
-		r = r.WithContext(ctx)
+// 		err = prod.Validate()
+// 		if err != nil {
+// 			p.l.Println("[ERROR] validating product", err)
+// 			http.Error(rw, fmt.Sprintf("Error validating product: %s", err),
+// 				http.StatusBadRequest)
+// 			return
+// 		}
+// 		// add the product to the context
+// 		ctx := context.WithValue(r.Context(), KeyProduct{}, prod)
+// 		r = r.WithContext(ctx)
 
-		// Call the next handler, which can be another middleware in the chain, or the final handler.
-		next.ServeHTTP(rw, r)
-	})
-}
+// 		// Call the next handler, which can be another middleware in the chain, or the final handler.
+// 		next.ServeHTTP(rw, r)
+// 	})
+// }
