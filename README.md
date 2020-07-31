@@ -25,10 +25,10 @@ Or open the following link in your browser:
 ## FRONTEND APP
 <br> The front end app is a basic react app , which you can install by
 
-`yarn`
+`yarn` or
 `npm install`
 
-`yarn start`
+`yarn start` or
 `npm start`
 
 whichever you prefer<br>
