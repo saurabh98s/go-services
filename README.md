@@ -21,3 +21,27 @@ To get the documentation you should be able to do:
 Or open the following link in your browser:
 
 `http://localhost:9090/docs`
+
+## FRONTEND APP
+<br> The front end app is a basic react app , which you can install by
+
+`yarn`
+`npm install`
+
+`yarn start`
+`npm start`
+
+whichever you prefer<br>
+you might come across a webpack error, in that case simply use the .env file in your project, with the code<br>
+
+`SKIP_PREFLIGHT_CHECK=true`
+ also delete all the node_modules if they are still in the repo.
+
+ ### webpack version issue fix
+
+ To fix the dependency tree, try following the steps below in the exact order:
+
+  1. Delete package-lock.json (not package.json!) and/or yarn.lock in your project folder.
+  2. Delete node_modules in your project folder.
+  3. Remove "webpack" from dependencies and/or devDependencies in the package.json file in your project folder.
+  4. Run npm install or yarn, depending on the package manager you use.
